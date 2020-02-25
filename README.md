@@ -1,5 +1,6 @@
 # react-blog
 
+---
 ## Dev set up
 - **eslint, prettier**
 ```
@@ -28,6 +29,7 @@ If you need auto restart `yarn start:dev`
 yarn add koa-router  
 ```
 
+---
 ## Backend
 - `Node.js`: node v12.13.1
 - `Koa` framework
