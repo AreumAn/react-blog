@@ -23,6 +23,10 @@ Add this script into `package.jason`
 If you don't need to auto restart `yarn start`, <br/>
 If you need auto restart `yarn start:dev`
 
+- **koa-router**
+```
+yarn add koa-router  
+```
 
 ## Backend
 - `Node.js`: node v12.13.1
