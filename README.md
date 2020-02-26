@@ -47,3 +47,11 @@ yarn add esm
     * _Dotenv_ is a zero-dependency module that loads environment variables from a . env file into process. env . Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
 
 * DB name: blog
+    | Filed name    | data type | desc              |
+    |---------------|-----------|-------------------|
+    | title         | String    | blog post title   |
+    | body          | String    | blog post content |
+    | tag           | [String]  | list of tag       |
+    | publishedDate | Date      | published date    |
+
+
