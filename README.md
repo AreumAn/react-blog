@@ -31,10 +31,12 @@ yarn add koa-router
 
 ---
 ## Backend
-- `Node.js`: node v12.13.1
-- `Koa` framework
-- `MongoDB` with `mongoose` library which is based on ODM(Object Data Modelling)
+* `Node.js`: node v12.13.1
+* `Koa` framework
+* `MongoDB` with `mongoose` library which is based on ODM(Object Data Modelling)
     ```
     yarn add mongoose dotenv
     ```
     * _Dotenv_ is a zero-dependency module that loads environment variables from a . env file into process. env . Storing configuration in the environment separate from code is based on The Twelve-Factor App methodology.
+
+* DB name: blog
