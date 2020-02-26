@@ -29,6 +29,13 @@ If you need auto restart `yarn start:dev`
 yarn add koa-router  
 ```
 
+- **esm to use ES Module**
+```
+yarn add esm
+```
+
+- **Add jsconfig.json for auto recommend**
+
 ---
 ## Backend
 * `Node.js`: node v12.13.1
