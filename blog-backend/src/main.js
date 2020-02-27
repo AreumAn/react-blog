@@ -5,6 +5,7 @@ import bodyParser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 
 import api from './api';
+import jwtMiddleware from './lib/jwtMiddleware';
 
 const { PORT, MONGO_URI } = process.env;
 
@@ -25,6 +26,7 @@ router.use('/api', api.routes());
 
 // Apply bodyParser before router
 app.use(bodyParser());
+app.use(jwtMiddleware);
 
 // Apply router to app instance
 app.use(router.routes()).use(router.allowedMethods());

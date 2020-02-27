@@ -40,6 +40,13 @@ yarn add esm
 ## Backend
 * `Node.js`: node v12.13.1
 * `Koa` framework
+  ```
+  //.env file
+  
+  PORT=4000
+  MONGO_URI=mongodb://localhost:27017/blog
+  JWT_SECRET= 
+  ```
 * `MongoDB` with `mongoose` library which is based on ODM(Object Data Modelling)
     ```
     yarn add mongoose dotenv
