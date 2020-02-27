@@ -54,4 +54,9 @@ yarn add esm
     | tag           | [String]  | list of tag       |
     | publishedDate | Date      | published date    |
 
+* JWT
+  ```
+  yarn add jsonwebtoken
+  ```
+
 
