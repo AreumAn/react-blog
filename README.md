@@ -68,5 +68,6 @@ yarn add esm
 
 ---
 ## Frontend
-* styled component
+* style: styled component
+* data: redux, react-redux, redux-actions, immer redux-devtools-extension
 
