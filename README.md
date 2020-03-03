@@ -69,5 +69,5 @@ yarn add esm
 ---
 ## Frontend
 * style: styled component
-* data: redux, react-redux, redux-actions, immer redux-devtools-extension
+* data: redux, react-redux, redux-actions, immer redux-devtools-extension, axios redux-saga 
 
