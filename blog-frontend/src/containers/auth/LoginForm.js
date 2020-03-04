@@ -1,12 +1,19 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeField, initializeForm } from '../../modules/auth';
+import { changeField, initializeForm, login } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
 import { useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
+import { check } from '../../modules/user';
 
-const LoginForm = () => {
+const LoginForm = ({ history }) => {
     const dispatch = useDispatch();
-    const { form } = useSelector(({ auth }) => ({ form: auth.login }));
+    const { form, auth, authError, user } = useSelector(({ auth, user }) => ({ 
+        form: auth.login,
+        auth: auth.auth,
+        authError: auth.authError,
+        user: user.user 
+    }));
 
     // Change input
     const onChange = e => {
@@ -23,7 +30,8 @@ const LoginForm = () => {
     // Submit form 
     const onSubmit = e => {
         e.preventDefault();
-        // TODO
+        const { username, password } = form;
+        dispatch(login({ username, password }));
     };
 
     // To prevent staying values in login form,
@@ -32,10 +40,29 @@ const LoginForm = () => {
         dispatch(initializeForm('login'));
     }, [dispatch]);
 
+    useEffect(() => {
+        if(authError) {
+            console.log('Error!!');
+            console.log(authError);
+            return;
+        }
+        if(auth) {
+            console.log('login success');
+            console.log(auth);
+            dispatch(check());
+        }
+    }, [auth, authError, dispatch]);
+
+    useEffect(() => {
+        if(user) {
+            history.push('/');
+        }
+    }, [history, user]);
+
     return (
         <AuthForm type="login" form={form} onChange={onChange} onSubmit={onSubmit} />
     );
 };
 
-export default LoginForm;
+export default withRouter(LoginForm);
 
