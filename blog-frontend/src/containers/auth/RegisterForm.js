@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeField, initializeForm, register } from '../../modules/auth';
 import AuthForm from '../../components/auth/AuthForm';
@@ -7,6 +7,7 @@ import { check } from '../../modules/user';
 import { withRouter } from 'react-router-dom';
 
 const RegisterForm = ({ history }) => {
+    const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const { form, auth, authError, user } = useSelector(({ auth, user }) => ({ 
         form: auth.register,
@@ -31,8 +32,14 @@ const RegisterForm = ({ history }) => {
     const onSubmit = e => {
         e.preventDefault();
         const { username, password, passwordConfirm } = form;
+        if([username, password, passwordConfirm].includes('')) {
+            setError('fill out all questions');
+            return;
+        }
         if(password !== passwordConfirm) {
-            // Error
+            setError('password and password confirm are different');
+            changeField({ form:'register', key:'password', value:''});
+            changeField({ form:'register', key:'passwordConfirm', value:''});
             return;
         }
         dispatch(register({ username, password }))
@@ -46,7 +53,11 @@ const RegisterForm = ({ history }) => {
 
     useEffect(() => {
         if(authError) {
-            console.log('Error!!');
+            if(authError.response.status === 409) {
+                setError('This id already exists.');
+                return;
+            }
+            setError('fail to register');
             console.log(authError);
             return;
         }
@@ -65,7 +76,7 @@ const RegisterForm = ({ history }) => {
 
 
     return (
-        <AuthForm type="register" form={form} onChange={onChange} onSubmit={onSubmit} />
+        <AuthForm type="register" form={form} onChange={onChange} onSubmit={onSubmit} error={error} />
     );
 };
 
