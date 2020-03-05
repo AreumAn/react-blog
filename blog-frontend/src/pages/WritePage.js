@@ -1,7 +1,13 @@
 import React from "react";
+import Responsive from "../components/common/Responsive";
+import Editor from "../components/write/Editor";
 
 const WritePage = () => {
-    return <div>WritePage</div>
+    return (
+        <Responsive>
+            <Editor />
+        </Responsive>
+    );
 }
 
 export default WritePage;

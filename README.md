@@ -70,5 +70,5 @@ yarn add esm
 ## Frontend
 * style: styled component
 * data: redux, react-redux, redux-actions, immer redux-devtools-extension, axios redux-saga
-* writing editor: Quill 
+* writing editor: Quill - https://quilljs.com/docs/quickstart/
 
