@@ -7,7 +7,7 @@ import Responsive from '../common/Responsive';
 
 const EditorBlock = styled(Responsive)`
     padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-bottom: 2.5rem;
 `;
 const TitleInput = styled.input`
     font-size: 3rem;
