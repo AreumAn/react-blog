@@ -65,10 +65,11 @@ yarn add esm
   ```
   yarn add jsonwebtoken
   ```
+* sanitize-html library
 
 ---
 ## Frontend
 * style: styled component
-* data: redux, react-redux, redux-actions, immer redux-devtools-extension, axios redux-saga
+* data: redux, react-redux, redux-actions, immer redux-devtools-extension, axios redux-saga, qs
 * writing editor: Quill - https://quilljs.com/docs/quickstart/
 
