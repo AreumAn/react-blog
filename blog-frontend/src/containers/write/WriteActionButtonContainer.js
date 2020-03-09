@@ -29,7 +29,6 @@ const WriteActionButtonsContainer = ({ history }) => {
     };
 
     useEffect(() => {
-        console.log(post);
         if (post) {
             const { _id, user } = post;
             history.push(`/@${user.username}/${_id}`);

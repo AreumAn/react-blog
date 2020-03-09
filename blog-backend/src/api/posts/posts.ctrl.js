@@ -1,8 +1,33 @@
 import Post from '../../models/post';
 import mongoose from 'mongoose';
 import Joi from 'joi';
+import sanitizeHtml from 'sanitize-html';
 
 const { ObjectId } = mongoose.Types;
+
+const sanitizeOption = {
+    allowedTags: [
+        'h1',
+        'h2',
+        'b',
+        'i',
+        'u',
+        's',
+        'p',
+        'ul',
+        'ol',
+        'li',
+        'blockquote',
+        'a',
+        'img',
+    ],
+    allowedAttributes: {
+        a: ['href', 'name', 'target'],
+        img: ['src'],
+        li: ['class'],
+    },
+    allowedSchemes: ['data', 'http'],
+};
 
 export const getPostById = async (ctx, next) => {
     const { id } = ctx.params;
@@ -12,26 +37,25 @@ export const getPostById = async (ctx, next) => {
     }
     try {
         const post = await Post.findById(id);
-        console.log(post);
-        if(!post) {
+        if (!post) {
             ctx.status = 404;
             return;
         }
         ctx.state.post = post;
         return next();
-    } catch(e) {
+    } catch (e) {
         ctx.throw(500, e);
     }
 };
 
 export const checkOwnPost = (ctx, next) => {
     const { user, post } = ctx.state;
-    if(post.user._id.toString() !== user._id) {
+    if (post.user._id.toString() !== user._id) {
         ctx.status = 403;
         return;
     }
     return next();
-}
+};
 
 /*  
     New post
@@ -62,9 +86,9 @@ export const write = async ctx => {
     const { title, body, tags } = ctx.request.body;
     const post = new Post({
         title,
-        body,
+        body: sanitizeHtml(body, sanitizeOption),
         tags,
-        user: ctx.state.user
+        user: ctx.state.user,
     });
     try {
         await post.save();
@@ -74,6 +98,13 @@ export const write = async ctx => {
     }
 };
 
+const removeHtmlAndShorten = body => {
+    const filtered = sanitizeHtml(body, {
+        allowedTags: [],
+    });
+    return filtered.length < 200 ? filtered : `${filtered.slice(0, 200)}...`;
+};
+
 /* 
     Get list of posts data
     GET /api/posts
@@ -81,7 +112,7 @@ export const write = async ctx => {
 export const list = async ctx => {
     const page = parseInt(ctx.query.page || '1', 10);
 
-    if(page < 1) {
+    if (page < 1) {
         ctx.status = 400;
         return;
     }
@@ -90,7 +121,7 @@ export const list = async ctx => {
     const query = {
         ...(username ? { 'user.username': username } : {}),
         ...(tag ? { tags: tag } : {}),
-    }
+    };
 
     try {
         const posts = await Post.find(query)
@@ -101,11 +132,10 @@ export const list = async ctx => {
             .exec();
         const postCount = await Post.countDocuments(query).exec();
         ctx.set('Last-page', Math.ceil(postCount / 10));
-        ctx.body = posts
-            .map(post => ({
-                ...post,
-                body: post.body.length < 200 ? post.body : `${post.body.slice(0, 200)}...`,
-            }));
+        ctx.body = posts.map(post => ({
+            ...post,
+            body: removeHtmlAndShorten(post.body),
+        }));
     } catch (e) {
         ctx.throw(500, e);
     }
@@ -157,8 +187,14 @@ export const update = async ctx => {
         return;
     }
 
+    const nextData = { ...ctx.request.body };
+
+    if(nextData.body) {
+        nextData.body = sanitizeHtml(nextData.body);
+    }
+
     try {
-        const post = await Post.findByIdAndUpdate(id, ctx.request.body, {
+        const post = await Post.findByIdAndUpdate(id, nextData, {
             new: true,
         }).exec();
         if (!post) {
